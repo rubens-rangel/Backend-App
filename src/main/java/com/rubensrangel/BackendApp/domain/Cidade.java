@@ -1,25 +1,21 @@
 package com.rubensrangel.BackendApp.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @Entity
-public class Categoria implements Serializable {
+public class Cidade implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -28,12 +24,13 @@ public class Categoria implements Serializable {
 
     private String nome;
 
-    @ManyToMany(mappedBy = "categorias")
-    @JsonManagedReference
-    private List<Produto> produtos = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "estado_id")
+    private Estado estado;
 
-    public Categoria(Integer id, String nome) {
+    public Cidade(Integer id, String nome, Estado estado) {
         this.id = id;
         this.nome = nome;
+        this.estado = estado;
     }
 }
