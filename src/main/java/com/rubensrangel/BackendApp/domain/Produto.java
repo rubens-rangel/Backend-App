@@ -1,22 +1,15 @@
 package com.rubensrangel.BackendApp.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -30,7 +23,8 @@ public class Produto implements Serializable {
 
     private String nome;
     private Double preco;
-
+    @OneToMany(mappedBy = "id.pedido")
+    private Set<ItemPedido> itens = new HashSet<>();
     @ManyToMany
     @JoinTable(name = "PRODUTO_CATEGORIA", joinColumns = @JoinColumn(name = " produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
     @JsonBackReference
@@ -40,5 +34,13 @@ public class Produto implements Serializable {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
+    }
+
+    public List<Pedido> getPedidos() {
+        List<Pedido> lista = new ArrayList<>();
+        for (ItemPedido x : itens) {
+            lista.add(x.getPedido());
+        }
+        return lista;
     }
 }

@@ -1,5 +1,7 @@
 package com.rubensrangel.BackendApp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rubensrangel.BackendApp.domain.enums.TipoCliente;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,13 +28,17 @@ public class Cliente implements Serializable {
     private String cpfCnpj;
     private Integer tipoCliente;
 
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "cliente")
     private List<Endereco> enderecos = new ArrayList<>();
 
     @ElementCollection
     @CollectionTable(name = "telefone")
     private Set<String> telefones = new HashSet<>();
+
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos = new ArrayList<>();
 
 
     public Cliente(Integer id, String nome, String email, String cpfCnpj, TipoCliente tipoCliente) {
