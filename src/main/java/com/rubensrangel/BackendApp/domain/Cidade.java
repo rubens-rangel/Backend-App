@@ -1,6 +1,5 @@
 package com.rubensrangel.BackendApp.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

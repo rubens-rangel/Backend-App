@@ -1,7 +1,7 @@
 package com.rubensrangel.BackendApp.resources;
 
-import com.rubensrangel.BackendApp.domain.Categoria;
-import com.rubensrangel.BackendApp.services.CategoriaService;
+import com.rubensrangel.BackendApp.domain.Pedido;
+import com.rubensrangel.BackendApp.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/categories")
-public class CategoriaResource {
+@RequestMapping(value = "/pedidos")
+public class PedidoResource {
 
 
     @Autowired
-    private CategoriaService categoriaService;
+    private PedidoService pedidoService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> find(@PathVariable Integer id) {
-        Categoria obj = categoriaService.buscar(id);
+    public ResponseEntity<?>  find(@PathVariable Integer id){
+        Pedido obj = pedidoService.buscar(id);
 
         return ResponseEntity.ok().body(obj);
     }

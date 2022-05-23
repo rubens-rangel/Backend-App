@@ -1,6 +1,5 @@
 package com.rubensrangel.BackendApp.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,12 +27,12 @@ public class Endereco implements Serializable {
     private String complemento;
     private String bairro;
     private String cep;
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "cidade_id")
     private Cidade cidade;
 
-    @JsonBackReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
