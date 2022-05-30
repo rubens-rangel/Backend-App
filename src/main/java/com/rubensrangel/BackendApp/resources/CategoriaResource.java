@@ -1,6 +1,7 @@
 package com.rubensrangel.BackendApp.resources;
 
 import com.rubensrangel.BackendApp.domain.Categoria;
+import com.rubensrangel.BackendApp.dto.CategoriaDTO;
 import com.rubensrangel.BackendApp.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/categories")
@@ -26,6 +29,12 @@ public class CategoriaResource {
         Categoria obj = categoriaService.find(id);
 
         return ResponseEntity.ok().body(obj);
+    }
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<CategoriaDTO>> findAll() {
+        List<Categoria> categoriaList = categoriaService.findAll();
+        List<CategoriaDTO> categoriaDTOList = categoriaList.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(categoriaDTOList);
     }
 
     @RequestMapping(method = RequestMethod.POST)
