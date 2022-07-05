@@ -1,6 +1,5 @@
 package com.rubensrangel.BackendApp.repositories;
 
-import com.rubensrangel.BackendApp.domain.Cliente;
 import com.rubensrangel.BackendApp.domain.Endereco;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
