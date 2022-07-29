@@ -10,9 +10,9 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FildMessage implements Serializable {
+public class FieldMessage implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String fildName;
+    private String fieldName;
     private  String msg;
 }

@@ -1,10 +1,7 @@
 package com.rubensrangel.BackendApp.domain.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
 public enum TipoCliente {
 
@@ -13,6 +10,11 @@ public enum TipoCliente {
 
     private int cod;
     private String desc;
+
+    private TipoCliente(int cod, String descricao) {
+        this.cod = cod;
+        this.desc = descricao;
+    }
 
     public int getCod() {
         return cod;

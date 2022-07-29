@@ -6,6 +6,7 @@ import com.rubensrangel.BackendApp.domain.Endereco;
 import com.rubensrangel.BackendApp.domain.enums.TipoCliente;
 import com.rubensrangel.BackendApp.dto.ClienteDTO;
 import com.rubensrangel.BackendApp.dto.ClienteNewDTO;
+import com.rubensrangel.BackendApp.repositories.CidadeRepository;
 import com.rubensrangel.BackendApp.repositories.ClienteRepository;
 import com.rubensrangel.BackendApp.repositories.EnderecoRepository;
 import com.rubensrangel.BackendApp.services.exceptions.DataIntegrityException;
@@ -29,6 +30,9 @@ public class ClienteService {
 
     @Autowired
     private EnderecoRepository enderecoRepository;
+
+    @Autowired
+    private CidadeRepository cidadeRepository;
 
     public Cliente find(Integer id) {
         Optional<Cliente> obj = repo.findById(id);
@@ -54,7 +58,7 @@ public class ClienteService {
         try {
             repo.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityException("Não é possível excluir um cliente que possui entidades relacionadas");
+            throw new DataIntegrityException("Não é possível excluir um cliente que possui há pedidos relacionados");
         }
     }
 
@@ -71,7 +75,7 @@ public class ClienteService {
         return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null);
     }
     public Cliente fromNewDTO(ClienteNewDTO objDTO) {
-        Cliente cli = new Cliente(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfCnpj(), TipoCliente.toEnum(objDTO.getTipoCliente()));
+        Cliente cli = new Cliente(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfOuCnpj(), TipoCliente.toEnum(objDTO.getTipo()));
         Cidade cid = new Cidade(objDTO.getCidadeId(), null, null);
         Endereco end = new Endereco(null, objDTO.getLogradouro(), objDTO.getNumero(), objDTO.getBairro(), objDTO.getComplemento(), objDTO.getCep(), cid, cli );
         cli.getEnderecos().add(end);
