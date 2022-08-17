@@ -2,6 +2,9 @@ package com.rubensrangel.BackendApp.config;
 
 import com.rubensrangel.BackendApp.services.DBService;
 
+import com.rubensrangel.BackendApp.services.EmailService;
+import com.rubensrangel.BackendApp.services.MockEmailService;
+import com.rubensrangel.BackendApp.services.SmtpEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +22,11 @@ public class DevConfig {
 
     @Value("${spring.jpa.hibernate.ddl-auto}")
     private String strategy;
+
+    @Bean
+    public EmailService emailService(){
+        return new SmtpEmailService();
+    }
 
     @Bean
     public boolean instantiateDatabase() throws ParseException {
