@@ -1,5 +1,10 @@
 package com.rubensrangel.BackendApp.services;
 
+import java.util.Date;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 import com.rubensrangel.BackendApp.domain.Pedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,19 +14,16 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.util.Date;
-
-public abstract class AbstractEmailService  implements EmailService{
-    @Autowired
-    private TemplateEngine templateEngine;
+public abstract class AbstractEmailService  implements EmailService {
 
     @Autowired
     private JavaMailSender javaMailSender;
 
     @Value("${default.sender}")
     private String sender;
+
+    @Autowired(required = false)
+    private TemplateEngine templateEngine;
 
     @Override
     public void sendOrderConfirmationEmail(Pedido obj){
