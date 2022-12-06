@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum Perfil {
 
-    PENDENTE(1, "PENDENTE"),
-    QUITADO(2, "QUITADO")
-    ,CANCELADO(3, "CANCELADO");
+    ADMIN(1, "ROLE_ADMIN"),
+    CLIENTE(2, "ROLE_CLIENTE");
 
     private int cod;
     private String desc;
