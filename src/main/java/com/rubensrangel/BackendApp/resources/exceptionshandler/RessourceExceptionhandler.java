@@ -1,5 +1,6 @@
 package com.rubensrangel.BackendApp.resources.exceptionshandler;
 
+import com.rubensrangel.BackendApp.services.exceptions.AuthorizationException;
 import com.rubensrangel.BackendApp.services.exceptions.DataIntegrityException;
 import com.rubensrangel.BackendApp.services.exceptions.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,11 @@ public class RessourceExceptionhandler {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<StandartError> authorization(AuthorizationException e, HttpServletRequest request) {
 
+        StandartError err = new StandartError(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
+    }
 
 }

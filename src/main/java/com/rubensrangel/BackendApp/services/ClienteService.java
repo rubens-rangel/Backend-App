@@ -3,12 +3,15 @@ package com.rubensrangel.BackendApp.services;
 import com.rubensrangel.BackendApp.domain.Cidade;
 import com.rubensrangel.BackendApp.domain.Cliente;
 import com.rubensrangel.BackendApp.domain.Endereco;
+import com.rubensrangel.BackendApp.domain.enums.Perfil;
 import com.rubensrangel.BackendApp.domain.enums.TipoCliente;
 import com.rubensrangel.BackendApp.dto.ClienteDTO;
 import com.rubensrangel.BackendApp.dto.ClienteNewDTO;
 import com.rubensrangel.BackendApp.repositories.CidadeRepository;
 import com.rubensrangel.BackendApp.repositories.ClienteRepository;
 import com.rubensrangel.BackendApp.repositories.EnderecoRepository;
+import com.rubensrangel.BackendApp.security.UserSS;
+import com.rubensrangel.BackendApp.services.exceptions.AuthorizationException;
 import com.rubensrangel.BackendApp.services.exceptions.DataIntegrityException;
 import com.rubensrangel.BackendApp.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +42,10 @@ public class ClienteService {
     private CidadeRepository cidadeRepository;
 
     public Cliente find(Integer id) {
+        UserSS user = UserService.authenticated();
+        if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+            throw new AuthorizationException("Acesso Negado");
+        }
         Optional<Cliente> obj = repo.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
     }
