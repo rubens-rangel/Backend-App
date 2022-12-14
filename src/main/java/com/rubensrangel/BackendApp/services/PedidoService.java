@@ -1,16 +1,17 @@
 package com.rubensrangel.BackendApp.services;
 
-import com.rubensrangel.BackendApp.domain.ItemPedido;
-import com.rubensrangel.BackendApp.domain.PagamentoComBoleto;
-import com.rubensrangel.BackendApp.domain.Pedido;
+import com.rubensrangel.BackendApp.domain.*;
 import com.rubensrangel.BackendApp.domain.enums.EstadoPagamento;
-import com.rubensrangel.BackendApp.repositories.ClienteRepository;
 import com.rubensrangel.BackendApp.repositories.ItemPedidoRepository;
 import com.rubensrangel.BackendApp.repositories.PagamentoRepository;
 import com.rubensrangel.BackendApp.repositories.PedidoRepository;
-import com.rubensrangel.BackendApp.repositories.ProdutoRepository;
+import com.rubensrangel.BackendApp.security.UserSS;
+import com.rubensrangel.BackendApp.services.exceptions.AuthorizationException;
 import com.rubensrangel.BackendApp.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -22,7 +23,7 @@ public class PedidoService {
     private PedidoRepository repo;
 
     @Autowired
-    private  BoletoService boletoService;
+    private BoletoService boletoService;
 
     @Autowired
     private PagamentoRepository pagamentoRepository;
@@ -38,6 +39,7 @@ public class PedidoService {
 
     @Autowired
     private EmailService emailService;
+
 
     public Pedido find(Integer id) {
         Optional<Pedido> obj = repo.findById(id);
@@ -65,5 +67,15 @@ public class PedidoService {
         itemPedidoRepository.saveAll(obj.getItens());
         emailService.sendOrderConfirmationHtmlEmail(obj);
         return obj;
+    }
+
+    public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        UserSS user = UserService.authenticated();
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Cliente cliente = clienteService.find(user.getId());
+        return repo.findByCliente(cliente, pageRequest);
     }
 }

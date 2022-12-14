@@ -1,7 +1,6 @@
 package com.rubensrangel.BackendApp.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,7 +24,7 @@ public class Pedido implements Serializable {
     private Integer id;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-    private Date Instante;
+    private Date instante;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
     private Pagamento pagamento;
@@ -43,7 +42,7 @@ public class Pedido implements Serializable {
 
     public Pedido(Integer id, Date instante, Cliente cliente, Endereco enderecoDeEntrega) {
         this.id = id;
-        Instante = instante;
+        this.instante = instante;
         this.cliente = cliente;
         this.enderecoDeEntrega = enderecoDeEntrega;
     }
