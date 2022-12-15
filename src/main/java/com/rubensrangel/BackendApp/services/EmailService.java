@@ -1,5 +1,6 @@
 package com.rubensrangel.BackendApp.services;
 
+import com.rubensrangel.BackendApp.domain.Cliente;
 import com.rubensrangel.BackendApp.domain.Pedido;
 import org.springframework.mail.SimpleMailMessage;
 
@@ -12,4 +13,6 @@ public interface EmailService {
 
     void sendEmail(SimpleMailMessage msg);
     void sendHtmlEmail(MimeMessage msg);
+
+    void sendNewPasswordEmail(Cliente cliente, String newPass);
 }
